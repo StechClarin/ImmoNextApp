@@ -1,0 +1,526 @@
+{
+  "settings": {
+    "name": "ImmoVitrine Congo",
+    "slogan": "Votre partenaire de confiance pour l'achat, la vente et la location immobilière au Congo-Brazzaville",
+    "logoUrl": "",
+    "currency": "FCFA",
+    "phonePrimary": "+242 06 600 00 00",
+    "phoneSecondary": "+242 05 500 00 00",
+    "whatsapp": "242066000000",
+    "email": "contact@immovitrine-congo.cg",
+    "address": "Avenue Amilcar Cabral, Centre-Ville (près de l'Hôtel de Ville)",
+    "city": "Brazzaville",
+    "country": "République du Congo",
+    "openingHours": "Lundi - Vendredi : 08h00 - 17h30 | Samedi : 09h00 - 14h00",
+    "aboutIntro": "Basée à Brazzaville et active sur l'ensemble du territoire congolais (Brazzaville, Pointe-Noire, Kintélé, Oyo), notre agence accompagne particuliers, expatriés, entreprises et investisseurs de la diaspora dans tous leurs projets immobiliers.",
+    "aboutStory": "Nous avons fondé notre agence avec une ambition claire : apporter transparence, sécurité juridique et réactivité au marché immobilier en République du Congo. Que vous recherchiez une villa contemporaine avec piscine au Centre-Ville, une maison familiale à Bacongo ou au Plateau des 15 ans, ou un investissement sécurisé à Kintélé ou Pointe-Noire, notre équipe vérifie rigoureusement chaque titre foncier et assure un suivi personnalisé de la première visite jusqu'à la signature devant notaire ou la remise des clés.",
+    "stats": {
+      "propertiesSoldOrRented": "350+",
+      "satisfiedClients": "98%",
+      "yearsExperience": "10 ans",
+      "citiesCovered": "Brazzaville & Pointe-Noire"
+    }
+  },
+  "properties": [
+    {
+      "id": "prop-1",
+      "slug": "villa-moderne-piscine-centre-ville-brazzaville",
+      "reference": "IMV-BZV-001",
+      "title": "Villa Contemporaine R+1 avec Piscine & Groupe Électrogène",
+      "transactionType": "VENTE",
+      "category": "Villa",
+      "status": "DISPONIBLE",
+      "price": 185000000,
+      "city": "Brazzaville",
+      "district": "Centre-Ville (Les Rapides / Corniche)",
+      "address": "Quartier Résidentiel Centre-Ville, à 3 min de la Corniche",
+      "coordinates": {
+        "lat": -4.2744,
+        "lng": 15.2785
+      },
+      "surface": 320,
+      "landSurface": 650,
+      "rooms": 6,
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "description": "Magnifique villa contemporaine R+1 bâtie sur une parcelle arborée de 650 m² en plein cœur de Brazzaville. Elle offre un vaste double séjour lumineux donnant sur la terrasse et la piscine privée, une cuisine équipée moderne, 4 suites climatisées avec salles d'eau privatives (dont une suite parentale avec dressing et balcon), ainsi qu'une dépendance pour le personnel. Titre foncier disponible et vérifié.",
+      "features": [
+        "Titre foncier en règle",
+        "Piscine privée avec terrasse",
+        "Groupe électrogène 30 KVA",
+        "Forage + Bâche à eau + Surpresseur",
+        "Climatisation intégrale",
+        "Guérite de gardiennage & Vidéosurveillance",
+        "Parking couvert 3 véhicules"
+      ],
+      "images": [
+        "/uploads/1794429192411-messi.jpg",
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": true,
+      "agentId": "team-1",
+      "createdAt": "2026-10-15T10:00:00Z"
+    },
+    {
+      "id": "prop-2",
+      "slug": "duplex-haut-standing-location-mpila-brazzaville",
+      "reference": "IMV-BZV-002",
+      "title": "Duplex Haut Standing Sécurisé Vue Fleuve Congo",
+      "transactionType": "LOCATION",
+      "category": "Duplex",
+      "status": "DISPONIBLE",
+      "price": 1200000,
+      "pricePeriod": "/ mois",
+      "city": "Brazzaville",
+      "district": "Mpila / Nouvel Horizon",
+      "address": "Boulevard Denis Sassou Nguesso, Mpila",
+      "coordinates": {
+        "lat": -4.252,
+        "lng": 15.301
+      },
+      "surface": 210,
+      "landSurface": 350,
+      "rooms": 5,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "description": "Superbe duplex moderne idéal pour cadres, diplomates ou familles expatriées dans le nouveau quartier dynamique de Mpila. Finitions haut de gamme, grand salon-séjour lumineux, cuisine américaine équipée, 3 grandes chambres autonomes à l'étage, jardin privatif et sécurité 24h/24.",
+      "features": [
+        "Groupe électrogène automatique",
+        "Bâche à eau 5000L + Surpresseur",
+        "Sécurité 24h/24",
+        "Fibre optique installée",
+        "Cuisine équipée",
+        "Jardin privatif & Cour pavée"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": true,
+      "agentId": "team-2",
+      "createdAt": "2026-10-18T14:30:00Z"
+    },
+    {
+      "id": "prop-3",
+      "slug": "maison-familiale-plateau-des-15-ans-brazzaville",
+      "reference": "IMV-BZV-003",
+      "title": "Belle Maison Familiale 4 Chambres sur Grande Parcelle Clôturée",
+      "transactionType": "VENTE",
+      "category": "Maison",
+      "status": "DISPONIBLE",
+      "price": 75000000,
+      "city": "Brazzaville",
+      "district": "Plateau des 15 ans",
+      "address": "Avenue des Trois Martyrs / Plateau des 15 ans",
+      "coordinates": {
+        "lat": -4.258,
+        "lng": 15.263
+      },
+      "surface": 180,
+      "landSurface": 500,
+      "rooms": 5,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "description": "Située sur une rue bitumée et calme du Plateau des 15 ans, cette belle maison de plain-pied entièrement rénovée repose sur une parcelle de 500 m². Elle comprend un grand salon, une salle à manger, 4 chambres spacieuses, 3 salles d'eau, une grande cour pavée pouvant accueillir jusqu'à 4 voitures et un studio indépendant à l'arrière.",
+      "features": [
+        "Accès voie bitumée",
+        "Parcelle 500 m² clôturée",
+        "Bâche à eau + Surpresseur",
+        "Studio indépendant en annexe",
+        "Climatisation dans toutes les pièces",
+        "Proche écoles et commerces"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": true,
+      "agentId": "team-1",
+      "createdAt": "2026-10-22T09:15:00Z"
+    },
+    {
+      "id": "prop-4",
+      "slug": "villa-bord-de-mer-cote-sauvage-pointe-noire",
+      "reference": "IMV-PNR-004",
+      "title": "Villa de Prestige avec Jardin Tropical à la Côte Sauvage",
+      "transactionType": "LOCATION",
+      "category": "Villa",
+      "status": "DISPONIBLE",
+      "price": 1650000,
+      "pricePeriod": "/ mois",
+      "city": "Pointe-Noire",
+      "district": "Côte Sauvage",
+      "address": "Quartier Côte Sauvage, à 400m de l'Océan Atlantique",
+      "coordinates": {
+        "lat": -4.805,
+        "lng": 11.842
+      },
+      "surface": 280,
+      "landSurface": 800,
+      "rooms": 6,
+      "bedrooms": 4,
+      "bathrooms": 4,
+      "description": "Superbe villa nichée dans un écrin de verdure à la Côte Sauvage à Pointe-Noire. Parfaite pour expatriés et dirigeants d'entreprises, elle dispose d'une piscine entourée d'une paillote, de 4 chambres climatisées avec salles de bain attenantes, d'un groupe électrogène de secours et d'un forage autonome.",
+      "features": [
+        "À 5 min à pied de la plage",
+        "Piscine & Paillote extérieure",
+        "Groupe électrogène 40 KVA",
+        "Forage + Traitement d'eau",
+        "Jardin arboré 800 m²",
+        "Quartier diplomatique et sécurisé"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": true,
+      "agentId": "team-3",
+      "createdAt": "2026-10-25T11:00:00Z"
+    },
+    {
+      "id": "prop-5",
+      "slug": "villa-neuve-kintele-brazzaville",
+      "reference": "IMV-BZV-005",
+      "title": "Villa Moderne Neuve Clé en Main - Quartier Résidentiel Kintélé",
+      "transactionType": "VENTE",
+      "category": "Villa",
+      "status": "DISPONIBLE",
+      "price": 55000000,
+      "city": "Brazzaville",
+      "district": "Kintélé (Zone Universitaire & Viaduc)",
+      "address": "Cité Résidentielle Kintélé, proche Route Nationale 2",
+      "coordinates": {
+        "lat": -4.155,
+        "lng": 15.325
+      },
+      "surface": 150,
+      "landSurface": 400,
+      "rooms": 4,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "description": "Excellente opportunité d'investissement ou de résidence principale dans le pôle urbain en pleine expansion de Kintélé. Villa neuve construite avec des matériaux durables : 3 chambres (dont une chambre parentale avec salle d'eau), salon lumineux, cuisine moderne avec rangements, terrasse avant et arrière, cour clôturée.",
+      "features": [
+        "Construction neuve (Garantie)",
+        "Idéal investissement / Diaspora",
+        "Forage + Château d'eau individuel",
+        "Panneaux solaires hybrides",
+        "Cour spacieuse 400 m²"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": false,
+      "agentId": "team-2",
+      "createdAt": "2026-10-29T16:00:00Z"
+    },
+    {
+      "id": "prop-6",
+      "slug": "appartement-meuble-bacongo-brazzaville",
+      "reference": "IMV-BZV-006",
+      "title": "Appartement Moderne 3 Chambres Climatisé & Sécurisé à Bacongo",
+      "transactionType": "LOCATION",
+      "category": "Appartement",
+      "status": "DISPONIBLE",
+      "price": 450000,
+      "pricePeriod": "/ mois",
+      "city": "Brazzaville",
+      "district": "Bacongo (Marché Total / Corniche Sud)",
+      "address": "Avenue Matsoua, Bacongo",
+      "coordinates": {
+        "lat": -4.289,
+        "lng": 15.256
+      },
+      "surface": 115,
+      "rooms": 4,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "description": "Bel appartement moderne situé au 2e étage d'un immeuble récent et sécurisé à Bacongo, à proximité immédiate du Centre-Ville et de la Corniche. Il offre un grand séjour avec balcon, une cuisine fermée avec buanderie, 3 chambres avec placards intégrés et 2 salles d'eau.",
+      "features": [
+        "Gardiennage 24h/24",
+        "Bâche à eau + Surpresseur",
+        "Groupe électrogène immeuble",
+        "Parking intérieur sécurisé",
+        "Balcon aéré"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": false,
+      "agentId": "team-1",
+      "createdAt": "2026-11-01T12:00:00Z"
+    },
+    {
+      "id": "prop-7",
+      "slug": "duplex-neuf-vente-och-moungali-brazzaville",
+      "reference": "IMV-BZV-007",
+      "title": "Duplex Contemporain 4 Chambres avec Terrasse Panoramique",
+      "transactionType": "VENTE",
+      "category": "Duplex",
+      "status": "DISPONIBLE",
+      "price": 115000000,
+      "city": "Brazzaville",
+      "district": "OCH / Moungali",
+      "address": "Avenue de la Paix, Secteur Résidentiel OCH",
+      "coordinates": {
+        "lat": -4.261,
+        "lng": 15.274
+      },
+      "surface": 240,
+      "landSurface": 400,
+      "rooms": 6,
+      "bedrooms": 4,
+      "bathrooms": 3,
+      "description": "Superbe duplex neuf aux finitions modernes situé en bordure d'avenue bitumée. Il propose 4 chambres autonomes, deux salons lumineux, une grande terrasse panoramique à l'étage et une cour pavée sécurisée.",
+      "features": [
+        "Titre foncier vérifié",
+        "Terrasse panoramique R+1",
+        "Bâche à eau + Surpresseur",
+        "Climatisation Split",
+        "Portail motorisé"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": true,
+      "agentId": "team-1",
+      "createdAt": "2026-11-02T10:00:00Z"
+    },
+    {
+      "id": "prop-8",
+      "slug": "maison-basse-location-centre-ville-pointe-noire",
+      "reference": "IMV-PNR-008",
+      "title": "Maison Résidentielle 3 Chambres avec Cour Arborée au Centre-Ville",
+      "transactionType": "LOCATION",
+      "category": "Maison",
+      "status": "DISPONIBLE",
+      "price": 850000,
+      "pricePeriod": "/ mois",
+      "city": "Pointe-Noire",
+      "district": "Centre-Ville (Quartier Wharf / Lumumba)",
+      "address": "Avenue Charles de Gaulle, Pointe-Noire",
+      "coordinates": {
+        "lat": -4.791,
+        "lng": 11.853
+      },
+      "surface": 175,
+      "landSurface": 450,
+      "rooms": 4,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "description": "Maison familiale calme et sécurisée au cœur de Pointe-Noire, proche des écoles internationales et des sièges d'entreprises. Grande cour verdoyante, groupe électrogène et réserve d'eau.",
+      "features": [
+        "Groupe électrogène 20 KVA",
+        "Cuve à eau + Surpresseur",
+        "Guérite gardien",
+        "Garage fermé",
+        "Jardin arboré"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": false,
+      "agentId": "team-3",
+      "createdAt": "2026-11-03T09:00:00Z"
+    },
+    {
+      "id": "prop-9",
+      "slug": "villa-duplex-piscine-diata-brazzaville",
+      "reference": "IMV-BZV-009",
+      "title": "Villa Duplex d'Architecte 5 Chambres avec Piscine à Diata",
+      "transactionType": "VENTE",
+      "category": "Villa",
+      "status": "DISPONIBLE",
+      "price": 145000000,
+      "city": "Brazzaville",
+      "district": "Diata / Stade Massamba-Débat",
+      "address": "Quartier Résidentiel Diata, Brazzaville",
+      "coordinates": {
+        "lat": -4.279,
+        "lng": 15.249
+      },
+      "surface": 290,
+      "landSurface": 600,
+      "rooms": 7,
+      "bedrooms": 5,
+      "bathrooms": 4,
+      "description": "Villa d'architecte spacieuse située dans le quartier calme et verdoyant de Diata. Cinq grandes chambres avec balcons, piscine carrelée, cuisine équipée et dépendance domestique.",
+      "features": [
+        "Titre foncier disponible",
+        "Piscine & Douche extérieure",
+        "Forage + Bâche à eau",
+        "Système d'alarme & Caméras",
+        "Parking 4 voitures"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": true,
+      "agentId": "team-2",
+      "createdAt": "2026-11-04T14:00:00Z"
+    },
+    {
+      "id": "prop-10",
+      "slug": "appartement-haut-standing-centre-ville-brazzaville",
+      "reference": "IMV-BZV-010",
+      "title": "Appartement Haut Standing 3 Chambres avec Ascenseur & Piscine Commune",
+      "transactionType": "LOCATION",
+      "category": "Appartement",
+      "status": "DISPONIBLE",
+      "price": 950000,
+      "pricePeriod": "/ mois",
+      "city": "Brazzaville",
+      "district": "Centre-Ville (Quartier Ambassades)",
+      "address": "Avenue Foch, Centre-Ville, Brazzaville",
+      "coordinates": {
+        "lat": -4.269,
+        "lng": 15.281
+      },
+      "surface": 160,
+      "rooms": 4,
+      "bedrooms": 3,
+      "bathrooms": 3,
+      "description": "Appartement de grand standing au 4e étage avec ascenseur, salle de sport, piscine commune et sécurité diplomatique 24h/24 en plein Centre-Ville de Brazzaville.",
+      "features": [
+        "Ascenseur & Groupe électrogène 24/7",
+        "Piscine & Salle de sport",
+        "Sécurité diplomatique 24h/24",
+        "Parking souterrain",
+        "Fibre optique"
+      ],
+      "images": [
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=85",
+        "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=85"
+      ],
+      "featured": false,
+      "agentId": "team-1",
+      "createdAt": "2026-11-05T10:00:00Z"
+    }
+  ],
+  "team": [
+    {
+      "id": "team-1",
+      "name": "Christian Mavoungou",
+      "role": "Directeur Général & Expert Foncier",
+      "specialty": "Ventes Résidentielles & Sécurisation Foncière (Brazzaville)",
+      "bio": "Plus de 12 ans d'expérience dans la transaction immobilière et l'accompagnement notarial en République du Congo. Spécialiste de l'évaluation de villas et terrains titrés.",
+      "phone": "+242 06 610 11 22",
+      "whatsapp": "242066101122",
+      "email": "c.mavoungou@immovitrine-congo.cg",
+      "photo": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+      "experienceYears": 12
+    },
+    {
+      "id": "team-2",
+      "name": "Grâce Ndinga",
+      "role": "Responsable Gestion Locative & Expatriés",
+      "specialty": "Locations Haut Standing & Gestion de Patrimoine",
+      "bio": "Experte de la location résidentielle et professionnelle à Brazzaville (Centre-Ville, Mpila, Plateau des 15 ans). Elle accompagne les propriétaires bailleurs et les entreprises.",
+      "phone": "+242 06 620 33 44",
+      "whatsapp": "242066203344",
+      "email": "g.ndinga@immovitrine-congo.cg",
+      "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80",
+      "experienceYears": 8
+    },
+    {
+      "id": "team-3",
+      "name": "Arsène Makosso",
+      "role": "Directeur d'Agence Pointe-Noire & Investissements",
+      "specialty": "Villas Côte Sauvage, Immobilier Commercial & Diaspora",
+      "bio": "Basé entre Pointe-Noire et Brazzaville, Arsène conseille les investisseurs locaux et la diaspora congolaise pour des acquisitions rentables et clé en main.",
+      "phone": "+242 05 530 55 66",
+      "whatsapp": "242055305566",
+      "email": "a.makosso@immovitrine-congo.cg",
+      "photo": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=600&q=80",
+      "experienceYears": 9
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-1",
+      "slug": "guide-acheter-maison-brazzaville-securite-juridique",
+      "title": "Comment acheter une maison à Brazzaville en toute sécurité juridique ?",
+      "category": "Conseils Achat",
+      "excerpt": "Titre foncier, permis d'occuper, passage devant notaire : découvrez toutes les étapes indispensables pour sécuriser votre acquisition immobilière au Congo.",
+      "content": "L'achat d'une maison ou d'une villa à Brazzaville ou Pointe-Noire est l'un des investissements les plus importants d'une vie. Pour éviter tout litige foncier, il est essentiel de suivre une méthodologie rigoureuse.\n\n1. Vérification des documents de propriété\nAvant tout engagement financier, exigez la présentation du Titre Foncier ou du Permis d'Occuper régulier et procédez à une vérification auprès de la Conservation Foncière et du Cadastre.\n\n2. L'état technique du bien\nAu-delà de la structure du bâtiment, vérifiez les équipements essentiels au confort quotidien au Congo : présence d'une bâche à eau avec surpresseur ou d'un forage, installation électrique stable (avec inverseur pour groupe électrogène ou système solaire) et assainissement.\n\n3. Le passage obligatoire devant Notaire\nToute vente immobilière en République du Congo doit être formalisée par un acte authentique rédigé par un notaire agréé, qui se chargera des formalités d'enregistrement et de mutation.",
+      "coverImage": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80",
+      "author": "Christian Mavoungou",
+      "publishedAt": "2026-10-12",
+      "readTime": "5 min"
+    },
+    {
+      "id": "art-2",
+      "slug": "quartiers-prisés-location-investissement-brazzaville-2026",
+      "title": "Les quartiers les plus prisés pour louer ou investir à Brazzaville",
+      "category": "Marché Immobilier",
+      "excerpt": "Du Centre-Ville historique au renouveau de Mpila en passant par l'essor de Kintélé : tour d'horizon des secteurs à fort potentiel.",
+      "content": "Le marché immobilier de Brazzaville connaît une profonde modernisation portée par de nouvelles infrastructures routières et urbaines.\n\n• Le Centre-Ville et la Corniche : Toujours en tête pour les résidences diplomatiques, les villas haut standing et les bureaux d'entreprises internationales.\n\n• Mpila et les Tours Jumelles : Avec l'aménagement des berges et des nouvelles avenues, Mpila attire une clientèle recherchant des duplex et appartements modernes.\n\n• Le Plateau des 15 ans et Bacongo : Très appréciés des familles pour leur convivialité, leur accessibilité et leurs maisons sur grandes parcelles.\n\n• Kintélé : Le pôle d'avenir au nord de la capitale, idéal pour acquérir une villa neuve à un prix encore très compétitif avec une forte perspective de plus-value.",
+      "coverImage": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80",
+      "author": "Grâce Ndinga",
+      "publishedAt": "2026-10-24",
+      "readTime": "4 min"
+    },
+    {
+      "id": "art-3",
+      "slug": "confier-gestion-locative-maison-agence-immobiliere",
+      "title": "Pourquoi confier la gestion locative de vos biens à une agence professionnelle ?",
+      "category": "Gestion Locative",
+      "excerpt": "Que vous résidiez au Congo ou dans la diaspora, déléguer la gestion de vos maisons vous garantit des loyers réguliers et un patrimoine entretenu.",
+      "content": "De nombreux propriétaires immobiliers à Brazzaville et Pointe-Noire manquent de temps ou résident à l'étranger. La gestion locative professionnelle répond à trois enjeux majeurs :\n\n1. Sélection rigoureuse des locataires : Étude de solvabilité, rédaction de baux conformes à la législation congolaise et état des lieux détaillé.\n\n2. Recouvrement ponctuel des loyers : Suivi mensuel des encaissements, quittances et reversement transparent au propriétaire avec compte-rendu.\n\n3. Entretien et valorisation du bien : Suivi des travaux de maintenance (climatisation, plomberie, groupe électrogène, peinture) avec des artisans qualifiés pour préserver la valeur de votre patrimoine sur le long terme.",
+      "coverImage": "https://images.unsplash.com/photo-1554469384-e58fac16e23a?auto=format&fit=crop&w=1000&q=80",
+      "author": "Arsène Makosso",
+      "publishedAt": "2026-11-02",
+      "readTime": "4 min"
+    }
+  ],
+  "inquiries": [
+    {
+      "id": "inq-1",
+      "type": "VISITE",
+      "propertyId": "prop-1",
+      "propertyTitle": "Villa Contemporaine R+1 avec Piscine & Groupe Électrogène",
+      "propertyRef": "IMV-BZV-001",
+      "fullName": "Jean-Paul Okemba",
+      "phone": "+242 06 912 34 56",
+      "email": "jp.okemba@exemple.cg",
+      "preferredDate": "2026-11-10",
+      "message": "Bonjour, je souhaiterais visiter cette villa au Centre-Ville ce mardi matin. Merci de me confirmer la disponibilité.",
+      "status": "NOUVEAU",
+      "createdAt": "2026-11-05T15:20:00Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-admin-default",
+      "username": "administrateur",
+      "fullName": "Administrateur Agence",
+      "role": "ADMIN",
+      "isSuperuser": false,
+      "permissions": [
+        "properties:write",
+        "properties:delete",
+        "inquiries:read",
+        "inquiries:write",
+        "inquiries:delete",
+        "articles:write",
+        "articles:delete",
+        "team:write",
+        "team:delete",
+        "settings:write",
+        "users:manage"
+      ],
+      "passwordHash": "d0d42cf272988cb07339247841dcedad:f3bcd44f6b5e71afcf4e011aa403c899df31298ca0439ec1181ee1435ea9545a6ffe95753be25bc655bd787e1b7b0427938c9eee6c289e6e875e8b6512d431ef",
+      "createdAt": "2026-11-12T22:26:09.322Z"
+    }
+  ]
+}

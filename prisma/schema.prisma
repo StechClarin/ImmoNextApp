@@ -1,0 +1,129 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Settings {
+  id             Int    @id @default(1)
+  name           String
+  slogan         String
+  logoUrl        String @default("") @map("logo_url")
+  currency       String @default("FCFA")
+  phonePrimary   String @map("phone_primary")
+  phoneSecondary String @default("") @map("phone_secondary")
+  whatsapp       String @default("")
+  email          String
+  address        String
+  city           String
+  country        String
+  openingHours   String @map("opening_hours")
+  aboutIntro     String @map("about_intro")
+  aboutStory     String @map("about_story")
+  statsJson      String @map("stats_json")
+
+  @@map("settings")
+}
+
+model TeamMember {
+  id              String     @id
+  name            String
+  role            String
+  specialty       String
+  bio             String
+  phone           String
+  email           String
+  whatsapp        String?
+  photo           String
+  experienceYears Int        @default(0) @map("experience_years")
+  properties      Property[]
+
+  @@map("team_members")
+}
+
+model Property {
+  id              String      @id
+  slug            String      @unique
+  reference       String      @unique
+  title           String
+  transactionType String      @map("transaction_type")
+  category        String
+  status          String
+  price           Int
+  pricePeriod     String?     @map("price_period")
+  city            String
+  district        String
+  address         String
+  lat             Float
+  lng             Float
+  surface         Int
+  landSurface     Int?        @map("land_surface")
+  rooms           Int
+  bedrooms        Int
+  bathrooms       Int
+  description     String
+  featuresJson    String      @map("features_json")
+  imagesJson      String      @map("images_json")
+  featured        Boolean     @default(false)
+  agentId         String?     @map("agent_id")
+  agent           TeamMember? @relation(fields: [agentId], references: [id], onDelete: SetNull)
+  inquiries       Inquiry[]
+  createdAt       String      @map("created_at")
+
+  @@index([transactionType])
+  @@index([city])
+  @@index([category])
+  @@index([status])
+  @@map("properties")
+}
+
+model Article {
+  id          String @id
+  slug        String @unique
+  title       String
+  category    String
+  excerpt     String
+  content     String
+  coverImage  String @map("cover_image")
+  author      String
+  publishedAt String @map("published_at")
+  readTime    String @map("read_time")
+
+  @@map("articles")
+}
+
+model Inquiry {
+  id            String    @id
+  type          String
+  propertyId    String?   @map("property_id")
+  property      Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+  propertyTitle String?   @map("property_title")
+  propertyRef   String?   @map("property_ref")
+  fullName      String    @map("full_name")
+  phone         String
+  email         String
+  preferredDate String?   @map("preferred_date")
+  message       String
+  status        String
+  createdAt     String    @map("created_at")
+
+  @@index([status])
+  @@map("inquiries")
+}
+
+model AdminUser {
+  id              String  @id
+  username        String  @unique
+  fullName        String  @map("full_name")
+  role            String
+  isSuperuser     Boolean @default(false) @map("is_superuser")
+  permissionsJson String  @map("permissions_json")
+  passwordHash    String  @map("password_hash")
+  createdAt       String  @map("created_at")
+
+  @@map("admin_users")
+}
+
