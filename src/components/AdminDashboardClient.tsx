@@ -144,6 +144,25 @@ export default function AdminDashboardClient({
   const [imagesText, setImagesText] = useState("");
   const [uploadingImage, setUploadingImage] = useState(false);
 
+  // Lock scroll and handle Escape key for property modal
+  useEffect(() => {
+    if (editingProperty) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && editingProperty) {
+        setEditingProperty(null);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [editingProperty]);
+
   function openNewProperty() {
     setOpenMenuId(null);
     setIsReferenceManuallyEdited(false);
@@ -916,386 +935,409 @@ export default function AdminDashboardClient({
               </div>
             </div>
 
-            {/* Property Form Drawer */}
+            {/* Modal de Modification / Création de Bien */}
             {editingProperty && (
-              <form
-                onSubmit={handleSaveProperty}
-                className="bg-slate-50 rounded-2xl p-4 sm:p-6 border-2 border-brand-600 shadow-xl space-y-5"
+              <div
+                className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-brand-950/70 backdrop-blur-sm animate-fade-in"
+                onClick={() => setEditingProperty(null)}
               >
-                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-brand-950 text-fusion-400 flex items-center justify-center shrink-0">
-                      <Home className="w-4 h-4" />
+                <div
+                  className="relative w-full max-w-4xl max-h-[92vh] flex flex-col bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-brand-950 text-white shrink-0">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-fusion-gradient text-brand-950 flex items-center justify-center shrink-0 shadow-md">
+                        <Home className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="text-base sm:text-lg font-extrabold text-white">
+                          {editingProperty.id
+                            ? `Modifier : ${editingProperty.title}`
+                            : "Nouveau bien immobilier"}
+                        </h3>
+                        <p className="text-xs text-brand-300">
+                          {editingProperty.reference
+                            ? `Référence : ${editingProperty.reference}`
+                            : "Formulaire d'édition du catalogue"}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-base sm:text-lg font-bold text-brand-950">
-                      {editingProperty.id
-                        ? `Modifier : ${editingProperty.title}`
-                        : "Nouveau bien immobilier"}
-                    </h3>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setEditingProperty(null)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Titre de l&apos;annonce *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={editingProperty.title || ""}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          title: e.target.value,
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Référence
-                    </label>
-                    <input
-                      type="text"
-                      value={editingProperty.reference || ""}
-                      onChange={(e) => {
-                        setIsReferenceManuallyEdited(true);
-                        setEditingProperty({
-                          ...editingProperty,
-                          reference: e.target.value,
-                        });
-                      }}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Transaction
-                    </label>
-                    <select
-                      value={editingProperty.transactionType || "VENTE"}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          transactionType: e.target
-                            .value as Property["transactionType"],
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
-                    >
-                      <option value="VENTE">VENTE</option>
-                      <option value="LOCATION">LOCATION</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Catégorie
-                    </label>
-                    <select
-                      value={editingProperty.category || "Villa"}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          category: e.target.value as Property["category"],
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
-                    >
-                      <option value="Villa">Villa</option>
-                      <option value="Maison">Maison</option>
-                      <option value="Duplex">Duplex</option>
-                      <option value="Appartement">Appartement</option>
-                      <option value="Terrain">Terrain</option>
-                      <option value="Bureau / Commerce">
-                        Bureau / Commerce
-                      </option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Statut
-                    </label>
-                    <select
-                      value={editingProperty.status || "DISPONIBLE"}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          status: e.target.value as Property["status"],
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
-                    >
-                      <option value="DISPONIBLE">DISPONIBLE</option>
-                      <option value="SOUS_OFFRE">SOUS OFFRE</option>
-                      <option value="VENDU">VENDU</option>
-                      <option value="LOUE">LOUÉ</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Prix (FCFA) *
-                    </label>
-                    <input
-                      type="number"
-                      required
-                      value={editingProperty.price || 0}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          price: Number(e.target.value),
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Ville
-                    </label>
-                    <input
-                      type="text"
-                      value={editingProperty.city || ""}
-                      onChange={(e) => {
-                        const nextCity = e.target.value;
-                        const shouldAutoUpdateRef =
-                          !editingProperty.id && !isReferenceManuallyEdited;
-                        setEditingProperty({
-                          ...editingProperty,
-                          city: nextCity,
-                          ...(shouldAutoUpdateRef
-                            ? {
-                                reference: buildNextPropertyReference(
-                                  nextCity,
-                                  properties.map((p) => p.reference)
-                                ),
-                              }
-                            : {}),
-                        });
-                      }}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Quartier
-                    </label>
-                    <input
-                      type="text"
-                      value={editingProperty.district || ""}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          district: e.target.value,
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Adresse précise
-                    </label>
-                    <input
-                      type="text"
-                      value={editingProperty.address || ""}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          address: e.target.value,
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Surface bâtie (m²)
-                    </label>
-                    <input
-                      type="number"
-                      value={editingProperty.surface || 0}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          surface: Number(e.target.value),
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Terrain (m²)
-                    </label>
-                    <input
-                      type="number"
-                      value={editingProperty.landSurface || 0}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          landSurface: Number(e.target.value),
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Chambres
-                    </label>
-                    <input
-                      type="number"
-                      value={editingProperty.bedrooms || 0}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          bedrooms: Number(e.target.value),
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Salles d&apos;eau
-                    </label>
-                    <input
-                      type="number"
-                      value={editingProperty.bathrooms || 0}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          bathrooms: Number(e.target.value),
-                        })
-                      }
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Description détaillée
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={editingProperty.description || ""}
-                    onChange={(e) =>
-                      setEditingProperty({
-                        ...editingProperty,
-                        description: e.target.value,
-                      })
-                    }
-                    className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Équipements & Atouts (1 par ligne)
-                    </label>
-                    <textarea
-                      rows={4}
-                      value={featuresText}
-                      onChange={(e) => setFeaturesText(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-mono"
-                    />
-                  </div>
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-bold text-slate-700">
-                        Photos (URLs ou téléversement)
-                      </label>
-                      <label className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:text-fusion-600 cursor-pointer">
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>
-                          {uploadingImage ? "Envoi..." : "Téléverser photo"}
-                        </span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0];
-                            if (!file) return;
-                            setUploadingImage(true);
-                            const url = await uploadFile(file);
-                            setUploadingImage(false);
-                            if (url) {
-                              setImagesText((prev) =>
-                                prev ? `${url}\n${prev}` : url
-                              );
-                              showToast("Photo ajoutée !");
-                            }
-                          }}
-                        />
-                      </label>
-                    </div>
-                    <textarea
-                      rows={4}
-                      value={imagesText}
-                      onChange={(e) => setImagesText(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-mono"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                  <label className="inline-flex items-center gap-2 text-sm font-bold text-slate-800 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={Boolean(editingProperty.featured)}
-                      onChange={(e) =>
-                        setEditingProperty({
-                          ...editingProperty,
-                          featured: e.target.checked,
-                        })
-                      }
-                      className="rounded text-brand-600 w-4 h-4"
-                    />
-                    <span>Mettre en &quot;Coup de cœur&quot; à la une</span>
-                  </label>
-
-                  <div className="flex items-center gap-3">
                     <button
                       type="button"
                       onClick={() => setEditingProperty(null)}
-                      className="px-4 py-2.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700"
+                      className="p-2 rounded-xl text-brand-300 hover:text-white hover:bg-brand-900 transition"
+                      aria-label="Fermer la fenêtre modale"
                     >
-                      Annuler
-                    </button>
-                    <button
-                      type="submit"
-                      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-brand-950 hover:bg-brand-900 text-white text-xs font-bold shadow"
-                    >
-                      <Save className="w-4 h-4 text-fusion-400" />
-                      <span>Enregistrer le bien</span>
+                      <X className="w-5 h-5" />
                     </button>
                   </div>
+
+                  {/* Modal Body (Scrollable Form) */}
+                  <form
+                    id="property-modal-form"
+                    onSubmit={handleSaveProperty}
+                    className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5"
+                  >
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div className="sm:col-span-2">
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Titre de l&apos;annonce *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={editingProperty.title || ""}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              title: e.target.value,
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Référence
+                        </label>
+                        <input
+                          type="text"
+                          value={editingProperty.reference || ""}
+                          onChange={(e) => {
+                            setIsReferenceManuallyEdited(true);
+                            setEditingProperty({
+                              ...editingProperty,
+                              reference: e.target.value,
+                            });
+                          }}
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Transaction
+                        </label>
+                        <select
+                          value={editingProperty.transactionType || "VENTE"}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              transactionType: e.target
+                                .value as Property["transactionType"],
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
+                        >
+                          <option value="VENTE">VENTE</option>
+                          <option value="LOCATION">LOCATION</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Catégorie
+                        </label>
+                        <select
+                          value={editingProperty.category || "Villa"}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              category: e.target.value as Property["category"],
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
+                        >
+                          <option value="Villa">Villa</option>
+                          <option value="Maison">Maison</option>
+                          <option value="Duplex">Duplex</option>
+                          <option value="Appartement">Appartement</option>
+                          <option value="Terrain">Terrain</option>
+                          <option value="Bureau / Commerce">
+                            Bureau / Commerce
+                          </option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Statut
+                        </label>
+                        <select
+                          value={editingProperty.status || "DISPONIBLE"}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              status: e.target.value as Property["status"],
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm"
+                        >
+                          <option value="DISPONIBLE">DISPONIBLE</option>
+                          <option value="SOUS_OFFRE">SOUS OFFRE</option>
+                          <option value="VENDU">VENDU</option>
+                          <option value="LOUE">LOUÉ</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Prix (FCFA) *
+                        </label>
+                        <input
+                          type="number"
+                          required
+                          value={editingProperty.price || 0}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              price: Number(e.target.value),
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Ville
+                        </label>
+                        <input
+                          type="text"
+                          value={editingProperty.city || ""}
+                          onChange={(e) => {
+                            const nextCity = e.target.value;
+                            const shouldAutoUpdateRef =
+                              !editingProperty.id && !isReferenceManuallyEdited;
+                            setEditingProperty({
+                              ...editingProperty,
+                              city: nextCity,
+                              ...(shouldAutoUpdateRef
+                                ? {
+                                    reference: buildNextPropertyReference(
+                                      nextCity,
+                                      properties.map((p) => p.reference)
+                                    ),
+                                  }
+                                : {}),
+                            });
+                          }}
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Quartier
+                        </label>
+                        <input
+                          type="text"
+                          value={editingProperty.district || ""}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              district: e.target.value,
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Adresse précise
+                        </label>
+                        <input
+                          type="text"
+                          value={editingProperty.address || ""}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              address: e.target.value,
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Surface bâtie (m²)
+                        </label>
+                        <input
+                          type="number"
+                          value={editingProperty.surface || 0}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              surface: Number(e.target.value),
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Terrain (m²)
+                        </label>
+                        <input
+                          type="number"
+                          value={editingProperty.landSurface || 0}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              landSurface: Number(e.target.value),
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Chambres
+                        </label>
+                        <input
+                          type="number"
+                          value={editingProperty.bedrooms || 0}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              bedrooms: Number(e.target.value),
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Salles d&apos;eau
+                        </label>
+                        <input
+                          type="number"
+                          value={editingProperty.bathrooms || 0}
+                          onChange={(e) =>
+                            setEditingProperty({
+                              ...editingProperty,
+                              bathrooms: Number(e.target.value),
+                            })
+                          }
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
+                        Description détaillée
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={editingProperty.description || ""}
+                        onChange={(e) =>
+                          setEditingProperty({
+                            ...editingProperty,
+                            description: e.target.value,
+                          })
+                        }
+                        className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-700 mb-1">
+                          Équipements & Atouts (1 par ligne)
+                        </label>
+                        <textarea
+                          rows={4}
+                          value={featuresText}
+                          onChange={(e) => setFeaturesText(e.target.value)}
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-mono"
+                        />
+                      </div>
+                      <div>
+                        <div className="flex items-center justify-between mb-1">
+                          <label className="block text-xs font-bold text-slate-700">
+                            Photos (URLs ou téléversement)
+                          </label>
+                          <label className="inline-flex items-center gap-1 text-xs font-bold text-brand-700 hover:text-fusion-600 cursor-pointer">
+                            <Upload className="w-3.5 h-3.5" />
+                            <span>
+                              {uploadingImage ? "Envoi..." : "Téléverser photo"}
+                            </span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                setUploadingImage(true);
+                                const url = await uploadFile(file);
+                                setUploadingImage(false);
+                                if (url) {
+                                  setImagesText((prev) =>
+                                    prev ? `${url}\n${prev}` : url
+                                  );
+                                  showToast("Photo ajoutée !");
+                                }
+                              }}
+                            />
+                          </label>
+                        </div>
+                        <textarea
+                          rows={4}
+                          value={imagesText}
+                          onChange={(e) => setImagesText(e.target.value)}
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+                  </form>
+
+                  {/* Modal Footer */}
+                  <div className="bg-slate-50 border-t border-slate-200 px-6 py-4 flex flex-wrap items-center justify-between gap-4 shrink-0">
+                    <label className="inline-flex items-center gap-2 text-sm font-bold text-slate-800 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={Boolean(editingProperty.featured)}
+                        onChange={(e) =>
+                          setEditingProperty({
+                            ...editingProperty,
+                            featured: e.target.checked,
+                          })
+                        }
+                        className="rounded text-brand-600 w-4 h-4"
+                      />
+                      <span>Mettre en &quot;Coup de cœur&quot; à la une</span>
+                    </label>
+
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setEditingProperty(null)}
+                        className="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-xs font-bold text-slate-700 transition"
+                      >
+                        Annuler
+                      </button>
+                      <button
+                        type="submit"
+                        form="property-modal-form"
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-fusion-gradient hover:brightness-110 text-brand-950 text-xs font-extrabold shadow-md transition"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>Enregistrer le bien</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </form>
+              </div>
             )}
 
             {/* Responsive 2-Column Grid of Property Admin Cards */}
