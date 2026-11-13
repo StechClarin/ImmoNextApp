@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  immovitrine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: immovitrine_app
+    restart: unless-stopped
+    ports:
+      # Port local sécurisé derrière le reverse proxy Nginx du VPS
+      - "127.0.0.1:8095:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+      - DATABASE_URL=file:../data/immovitrine.db
+      - AUTH_SECRET=${AUTH_SECRET:-immovitrine-congo-ethernanos-zircon-secret-2026}
+      - SUPERUSER_PASSWORD=${SUPERUSER_PASSWORD:-admin@1234}
+    volumes:
+      # Persistance de la base de données SQLite Prisma
+      - ./data:/app/data
+      # Persistance des photos et médias téléversés
+      - ./public/uploads:/app/public/uploads
