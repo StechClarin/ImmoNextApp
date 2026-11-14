@@ -22,3 +22,4 @@ services:
       - ./data:/app/data
       # Persistance des photos et médias téléversés
       - ./public/uploads:/app/public/uploads
+

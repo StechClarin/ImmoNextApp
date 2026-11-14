@@ -175,7 +175,10 @@ export default function AdminLoginForm({
               </span>
             </button>
 
-            <div className="pt-2 text-center">
+            <div className="pt-2 text-center space-y-2">
+              <p className="text-[11px] text-slate-500">
+                🔒 Session active limitée à 1h • Un seul poste connecté simultanément
+              </p>
               <Link
                 href="/"
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-brand-700 transition"

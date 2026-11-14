@@ -239,7 +239,16 @@ export default function Footer({ settings }: { settings: AgencySettings }) {
       <div className="border-t border-brand-900 py-5 px-4 text-xs text-brand-400">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <p>
-            © {new Date().getFullYear()} {settings.name} ({settings.country}).
+            © 2026           <a
+            href="https://ethernanos.space"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-brand-900/90 hover:bg-brand-800 border border-brand-700/80 hover:border-fusion-400/60 text-brand-200 hover:text-white transition group shadow-sm"
+          >              <img
+                src="/logo_eth.svg"
+                alt="ethernanos logo"
+                className="w-4 h-4 object-contain"
+              />Ethernanos</a>.
             Tous droits réservés.
           </p>
 
@@ -261,15 +270,15 @@ export default function Footer({ settings }: { settings: AgencySettings }) {
             <span className="text-xs tracking-wide">
               developed by{" "}
               <strong className="font-bold bg-fusion-gradient bg-clip-text text-transparent">
-                ethernanos-SC@Zircon
+                
               </strong>
             </span>
           </a>
 
           <div className="flex items-center gap-4">
-            <Link href="/admin" className="hover:text-fusion-300">
+            {/* <Link href="/admin" className="hover:text-fusion-300">
               Accès Back-Office
-            </Link>
+            </Link> */}
             <span>•</span>
             <Link href="/contact" className="hover:text-fusion-300">
               Nous contacter

@@ -163,6 +163,21 @@ export default function AdminDashboardClient({
     };
   }, [editingProperty]);
 
+  // Vérification périodique de la session (durée 1h et poste unique connecté)
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.status === 401) {
+          router.refresh();
+        }
+      } catch {
+        // En cas de coupure réseau temporaire, on ne déconnecte pas prématurément
+      }
+    }, 30000); // toutes les 30 secondes
+    return () => clearInterval(interval);
+  }, [router]);
+
   function openNewProperty() {
     setOpenMenuId(null);
     setIsReferenceManuallyEdited(false);

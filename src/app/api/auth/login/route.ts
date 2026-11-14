@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   ADMIN_SESSION_COOKIE,
   authenticateUser,
-  createSessionToken,
+  registerActiveSession,
 } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
@@ -23,20 +23,22 @@ export async function POST(req: NextRequest) {
       req.nextUrl.protocol === "https:" ||
       req.headers.get("x-forwarded-proto") === "https";
 
-    const token = createSessionToken(user);
+    // Enregistrement de la session unique (1 heure, un seul poste à la fois)
+    const { token, maxAge } = await registerActiveSession(user);
+
     const res = NextResponse.json({ user });
     res.cookies.set(ADMIN_SESSION_COOKIE, token, {
       httpOnly: true,
       sameSite: "lax",
       secure: isHttps,
       path: "/",
-      maxAge: 60 * 60 * 24 * 7, // 7 jours
+      maxAge, // 3600s = 1 heure
     });
     return res;
-  } catch {
+  } catch (e) {
     return NextResponse.json(
-      { error: "Requête invalide." },
-      { status: 400 }
+      { error: "Erreur lors de la connexion", details: String(e) },
+      { status: 500 }
     );
   }
 }
