@@ -18,6 +18,7 @@ RUN npm run build
 
 # 3. Production runner
 FROM base AS runner
+RUN apk add --no-cache su-exec
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
@@ -31,6 +32,10 @@ RUN addgroup --system --gid 1001 nodejs && \
 RUN mkdir -p /app/data /app/public/uploads && \
     chown -R nextjs:nodejs /app/data /app/public/uploads
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Copy built application
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
@@ -40,9 +45,8 @@ COPY --from=builder /app/data/db.json ./data/db.json
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-USER nextjs
-
 EXPOSE 3000
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", "server.js"]
 
