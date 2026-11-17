@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { getProperties, getArticles, getTeam, getSettings } from "@/lib/db";
 import PropertyCard from "@/components/PropertyCard";
+import HeroBackgroundSlider from "@/components/HeroBackgroundSlider";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,22 @@ export default async function HomePage() {
     .slice(0, 6);
   const articles = allArticles.slice(0, 3);
   const team = allTeam.slice(0, 3);
+
+  // Diapositives pour le slider dynamique d'arrière-plan
+  const heroSlides = properties
+    .filter(
+      (p) =>
+        p.images &&
+        p.images.length > 0 &&
+        typeof p.images[0] === "string" &&
+        p.images[0].startsWith("http")
+    )
+    .slice(0, 6)
+    .map((p) => ({
+      url: p.images[0],
+      caption: p.title,
+      location: `${p.city}${p.district ? " • " + p.district : ""}`,
+    }));
 
   const activities = [
     {
@@ -67,20 +84,13 @@ export default async function HomePage() {
     <div>
       {/* HERO SECTION */}
       <section className="relative bg-brand-950 text-white overflow-hidden">
-        {/* Background image with Teal & Fusion overlay */}
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-25"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1800&q=85')",
-          }}
+        {/* SLIDER D'IMAGES DYNAMIQUE EN ARRIÈRE-PLAN (VIVANT & ANIMÉ) */}
+        <HeroBackgroundSlider
+          slides={heroSlides.length > 0 ? heroSlides : undefined}
+          intervalMs={6000}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-950 via-brand-900/95 to-brand-800/80" />
-        {/* Decorative fusion glow */}
-        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-fusion-500/20 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full bg-brand-400/15 blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="max-w-3xl space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-900/90 border border-fusion-400/40 text-fusion-300 text-xs font-semibold tracking-wide">
               
