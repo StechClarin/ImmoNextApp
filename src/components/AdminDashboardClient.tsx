@@ -102,6 +102,9 @@ export default function AdminDashboardClient({
     currentUser.role === "SUPERUSER" ||
     currentUser.username.toLowerCase() === "ethernanos";
 
+  const isEthernanos =
+    currentUser.username.toLowerCase() === "ethernanos";
+
   function can(permission: AdminPermission): boolean {
     if (isSuperuser) return true;
     return currentUser.permissions.includes(permission);
@@ -2455,8 +2458,9 @@ export default function AdminDashboardClient({
               />
             </div>
 
-            {/* SECTION APPARENCE & CHARTE GRAPHIQUE */}
-            <div className="pt-6 border-t border-slate-200/90 space-y-6">
+            {/* SECTION APPARENCE & CHARTE GRAPHIQUE (Superadmin Ethernanos uniquement) */}
+            {isEthernanos && (
+              <div className="pt-6 border-t border-slate-200/90 space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-fusion-500/10 flex items-center justify-center text-fusion-600">
@@ -2872,6 +2876,7 @@ export default function AdminDashboardClient({
                 </div>
               </div>
             </div>
+            )}
 
             <button
               type="submit"
@@ -2983,8 +2988,8 @@ export default function AdminDashboardClient({
         )}
       </div>
 
-      {/* MODALE DU SÉLECTEUR AVANCÉ AVEC SPECTRE & BARRE D'OPACITÉ */}
-      {activeColorPicker && (
+      {/* MODALE DU SÉLECTEUR AVANCÉ AVEC SPECTRE & BARRE D'OPACITÉ (Ethernanos uniquement) */}
+      {isEthernanos && activeColorPicker && (
         <ColorPickerModal
           isOpen={true}
           onClose={() => setActiveColorPicker(null)}
