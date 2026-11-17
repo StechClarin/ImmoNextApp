@@ -67,6 +67,202 @@ export const THEME_PRESETS: ThemePreset[] = [
   },
 ];
 
+export interface ColorWithAlpha {
+  r: number;
+  g: number;
+  b: number;
+  a: number; // 0 to 1
+  hex6: string; // e.g. #0f766e
+  hex8: string; // e.g. #0f766ecc
+  rgba: string; // e.g. rgba(15, 118, 110, 0.8)
+}
+
+export function parseColorWithAlpha(
+  input: string | undefined,
+  defaultHex = "#0f766e"
+): ColorWithAlpha {
+  if (!input) input = defaultHex;
+  const str = input.trim();
+
+  // Support RGBA: rgba(r, g, b, a)
+  const rgbaMatch = str.match(
+    /^rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)$/i
+  );
+  if (rgbaMatch) {
+    const r = Math.max(0, Math.min(255, parseInt(rgbaMatch[1], 10)));
+    const g = Math.max(0, Math.min(255, parseInt(rgbaMatch[2], 10)));
+    const b = Math.max(0, Math.min(255, parseInt(rgbaMatch[3], 10)));
+    const a =
+      rgbaMatch[4] !== undefined
+        ? Math.max(0, Math.min(1, parseFloat(rgbaMatch[4])))
+        : 1;
+    const toH = (x: number) => x.toString(16).padStart(2, "0");
+    const aHex = Math.round(a * 255)
+      .toString(16)
+      .padStart(2, "0");
+    return {
+      r,
+      g,
+      b,
+      a: Math.round(a * 100) / 100,
+      hex6: `#${toH(r)}${toH(g)}${toH(b)}`,
+      hex8: `#${toH(r)}${toH(g)}${toH(b)}${aHex}`,
+      rgba: `rgba(${r}, ${g}, ${b}, ${Math.round(a * 100) / 100})`,
+    };
+  }
+
+  // Support HEX (3, 4, 6, 8)
+  let clean = str.replace(/^#/, "");
+  let a = 1;
+
+  if (clean.length === 3) {
+    clean = clean
+      .split("")
+      .map((c) => c + c)
+      .join("");
+  } else if (clean.length === 4) {
+    const aPart = clean[3];
+    clean = clean
+      .slice(0, 3)
+      .split("")
+      .map((c) => c + c)
+      .join("");
+    a = parseInt(aPart + aPart, 16) / 255;
+  } else if (clean.length === 8) {
+    const aPart = clean.slice(6, 8);
+    clean = clean.slice(0, 6);
+    a = parseInt(aPart, 16) / 255;
+  }
+
+  if (!/^[0-9a-fA-F]{6}$/.test(clean)) {
+    clean = defaultHex.replace(/^#/, "").slice(0, 6);
+    a = 1;
+  }
+
+  const n = parseInt(clean, 16);
+  const r = (n >> 16) & 255;
+  const g = (n >> 8) & 255;
+  const b = n & 255;
+  const toH = (x: number) => x.toString(16).padStart(2, "0");
+  const aHex = Math.round(a * 255)
+    .toString(16)
+    .padStart(2, "0");
+
+  return {
+    r,
+    g,
+    b,
+    a: Math.max(0, Math.min(1, Math.round(a * 100) / 100)),
+    hex6: `#${toH(r)}${toH(g)}${toH(b)}`,
+    hex8: `#${toH(r)}${toH(g)}${toH(b)}${aHex}`,
+    rgba: `rgba(${r}, ${g}, ${b}, ${Math.round(a * 100) / 100})`,
+  };
+}
+
+export function rgbToHsv(
+  r: number,
+  g: number,
+  b: number
+): { h: number; s: number; v: number } {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  const s = max === 0 ? 0 : d / max;
+  const v = max;
+
+  if (max !== min) {
+    switch (max) {
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    v: Math.round(v * 100),
+  };
+}
+
+export function hsvToRgb(
+  h: number,
+  s: number,
+  v: number
+): { r: number; g: number; b: number } {
+  h = (((h % 360) + 360) % 360) / 360;
+  s = Math.max(0, Math.min(100, s)) / 100;
+  v = Math.max(0, Math.min(100, v)) / 100;
+
+  const i = Math.floor(h * 6);
+  const f = h * 6 - i;
+  const p = v * (1 - s);
+  const q = v * (1 - f * s);
+  const t = v * (1 - (1 - f) * s);
+
+  let r = 0,
+    g = 0,
+    b = 0;
+  switch (i % 6) {
+    case 0:
+      r = v;
+      g = t;
+      b = p;
+      break;
+    case 1:
+      r = q;
+      g = v;
+      b = p;
+      break;
+    case 2:
+      r = p;
+      g = v;
+      b = t;
+      break;
+    case 3:
+      r = p;
+      g = q;
+      b = v;
+      break;
+    case 4:
+      r = t;
+      g = p;
+      b = v;
+      break;
+    case 5:
+      r = v;
+      g = p;
+      b = q;
+      break;
+  }
+
+  return {
+    r: Math.round(r * 255),
+    g: Math.round(g * 255),
+    b: Math.round(b * 255),
+  };
+}
+
+export function rgbaToHex(r: number, g: number, b: number, a = 1): string {
+  const toH = (x: number) => x.toString(16).padStart(2, "0");
+  const a255 = Math.round(Math.max(0, Math.min(1, a)) * 255);
+  if (a255 >= 255) {
+    return `#${toH(r)}${toH(g)}${toH(b)}`.toLowerCase();
+  }
+  return `#${toH(r)}${toH(g)}${toH(b)}${toH(a255)}`.toLowerCase();
+}
+
 interface RgbColor {
   r: number;
   g: number;
@@ -74,22 +270,8 @@ interface RgbColor {
 }
 
 function hexToRgb(hex: string): RgbColor {
-  let c = (hex || "").replace(/^#/, "").trim();
-  if (c.length === 3) {
-    c = c
-      .split("")
-      .map((x) => x + x)
-      .join("");
-  }
-  if (!/^[0-9a-fA-F]{6}$/.test(c)) {
-    return { r: 15, g: 118, b: 110 }; // Fallback Teal
-  }
-  const n = parseInt(c, 16);
-  return {
-    r: (n >> 16) & 255,
-    g: (n >> 8) & 255,
-    b: n & 255,
-  };
+  const parsed = parseColorWithAlpha(hex);
+  return { r: parsed.r, g: parsed.g, b: parsed.b };
 }
 
 function mix(c1: RgbColor, c2: RgbColor, weight: number): RgbColor {
@@ -111,16 +293,16 @@ function toHex(c: RgbColor): string {
 }
 
 export function generateThemeCss(settings?: Partial<AgencySettings>): string {
-  const primaryHex = settings?.primaryColor || "#0f766e";
-  const darkHex = settings?.darkColor || "#042f2e";
-  const secondaryHex = settings?.secondaryColor || "#ea580c";
-  const accentHex = settings?.accentColor || "#f59e0b";
+  const primaryParsed = parseColorWithAlpha(settings?.primaryColor, "#0f766e");
+  const darkParsed = parseColorWithAlpha(settings?.darkColor, "#042f2e");
+  const secondaryParsed = parseColorWithAlpha(settings?.secondaryColor, "#ea580c");
+  const accentParsed = parseColorWithAlpha(settings?.accentColor, "#f59e0b");
 
   const white: RgbColor = { r: 255, g: 255, b: 255 };
-  const primary = hexToRgb(primaryHex);
-  const dark = hexToRgb(darkHex);
-  const secondary = hexToRgb(secondaryHex);
-  const accent = hexToRgb(accentHex);
+  const primary: RgbColor = { r: primaryParsed.r, g: primaryParsed.g, b: primaryParsed.b };
+  const dark: RgbColor = { r: darkParsed.r, g: darkParsed.g, b: darkParsed.b };
+  const secondary: RgbColor = { r: secondaryParsed.r, g: secondaryParsed.g, b: secondaryParsed.b };
+  const accent: RgbColor = { r: accentParsed.r, g: accentParsed.g, b: accentParsed.b };
 
   // Échelle de teintes Brand (50 -> 950)
   const brandShades = {
@@ -177,13 +359,24 @@ export function generateThemeCss(settings?: Partial<AgencySettings>): string {
   --color-fusion-800: ${fusionShades[800]};
   --color-fusion-900: ${fusionShades[900]};
 
-  --gradient-fusion: linear-gradient(135deg, ${secondaryHex} 0%, ${accentHex} 50%, ${lighterAccent} 100%);
-  --gradient-teal: linear-gradient(135deg, ${darkHex} 0%, ${primaryHex} 60%, ${toHex(mix(white, primary, 0.85))} 100%);
+  --gradient-fusion: linear-gradient(135deg, ${secondaryParsed.rgba} 0%, ${accentParsed.rgba} 50%, ${lighterAccent} 100%);
+  --gradient-teal: linear-gradient(135deg, ${darkParsed.rgba} 0%, ${primaryParsed.rgba} 60%, ${toHex(mix(white, primary, 0.85))} 100%);
 
-  --theme-primary: ${primaryHex};
-  --theme-dark: ${darkHex};
-  --theme-secondary: ${secondaryHex};
-  --theme-accent: ${accentHex};
+  --theme-primary: ${primaryParsed.rgba};
+  --theme-primary-hex: ${primaryParsed.hex8};
+  --theme-primary-alpha: ${primaryParsed.a};
+
+  --theme-dark: ${darkParsed.rgba};
+  --theme-dark-hex: ${darkParsed.hex8};
+  --theme-dark-alpha: ${darkParsed.a};
+
+  --theme-secondary: ${secondaryParsed.rgba};
+  --theme-secondary-hex: ${secondaryParsed.hex8};
+  --theme-secondary-alpha: ${secondaryParsed.a};
+
+  --theme-accent: ${accentParsed.rgba};
+  --theme-accent-hex: ${accentParsed.hex8};
+  --theme-accent-alpha: ${accentParsed.a};
 }`;
 }
 

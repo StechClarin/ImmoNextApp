@@ -39,6 +39,8 @@ import {
   Database,
   Palette,
   RotateCcw,
+  Sliders,
+  Pipette,
 } from "lucide-react";
 import {
   Property,
@@ -50,7 +52,12 @@ import {
   AdminPermission,
 } from "@/types/immo";
 import { buildNextPropertyReference, formatPriceFCFA } from "@/lib/format";
-import { THEME_PRESETS } from "@/lib/theme";
+import {
+  THEME_PRESETS,
+  parseColorWithAlpha,
+  rgbaToHex,
+} from "@/lib/theme";
+import ColorPickerModal from "@/components/ColorPickerModal";
 
 export default function AdminDashboardClient({
   currentUser,
@@ -84,6 +91,11 @@ export default function AdminDashboardClient({
   const [adminUsers, setAdminUsers] =
     useState<SafeAdminUser[]>(initialAdminUsers);
   const [toast, setToast] = useState<string | null>(null);
+  const [activeColorPicker, setActiveColorPicker] = useState<{
+    key: "primaryColor" | "secondaryColor" | "accentColor" | "darkColor";
+    name: string;
+    role: string;
+  } | null>(null);
 
   const isSuperuser =
     currentUser.isSuperuser ||
@@ -2539,123 +2551,175 @@ export default function AdminDashboardClient({
                 </div>
               </div>
 
-              {/* SÉLECTEURS DE COULEURS */}
+              {/* SÉLECTEURS DE COULEURS AVEC BARRE D'OPACITÉ */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80">
-                {/* 1. COULEUR PRINCIPALE */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1">
-                    Couleur Principale (Brand)
-                  </label>
-                  <p className="text-[11px] text-slate-500 mb-2">
-                    Bandeaux, boutons primaires, titres
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={settings.primaryColor || "#0f766e"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, primaryColor: e.target.value })
-                      }
-                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
-                    />
-                    <input
-                      type="text"
-                      value={settings.primaryColor || "#0f766e"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, primaryColor: e.target.value })
-                      }
-                      placeholder="#0f766e"
-                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
-                    />
-                  </div>
-                </div>
+                {[
+                  {
+                    key: "primaryColor" as const,
+                    name: "Couleur Principale (Brand)",
+                    role: "Bandeaux, boutons primaires, titres",
+                    defaultHex: "#0f766e",
+                  },
+                  {
+                    key: "secondaryColor" as const,
+                    name: "Couleur Secondaire (Fusion)",
+                    role: "Boutons d'action, badges, contrastes",
+                    defaultHex: "#ea580c",
+                  },
+                  {
+                    key: "accentColor" as const,
+                    name: "Couleur d'Accentuation (Or / Ambre)",
+                    role: "Prix, étoiles, dégradés d'impact",
+                    defaultHex: "#f59e0b",
+                  },
+                  {
+                    key: "darkColor" as const,
+                    name: "Couleur Sombre (Dark / Footer)",
+                    role: "Pied de page, hero fond sombre, header",
+                    defaultHex: "#042f2e",
+                  },
+                ].map((col) => {
+                  const rawVal = settings[col.key] || col.defaultHex;
+                  const parsed = parseColorWithAlpha(rawVal, col.defaultHex);
+                  const alphaPercent = Math.round(parsed.a * 100);
 
-                {/* 2. COULEUR SECONDAIRE */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1">
-                    Couleur Secondaire (Fusion)
-                  </label>
-                  <p className="text-[11px] text-slate-500 mb-2">
-                    Boutons d&apos;action, badges, contrastes
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={settings.secondaryColor || "#ea580c"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, secondaryColor: e.target.value })
-                      }
-                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
-                    />
-                    <input
-                      type="text"
-                      value={settings.secondaryColor || "#ea580c"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, secondaryColor: e.target.value })
-                      }
-                      placeholder="#ea580c"
-                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
-                    />
-                  </div>
-                </div>
+                  return (
+                    <div
+                      key={col.key}
+                      className="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between space-y-3"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-1 mb-1">
+                          <label className="text-xs font-bold text-slate-800 truncate">
+                            {col.name}
+                          </label>
+                        </div>
+                        <p className="text-[11px] text-slate-500 line-clamp-1 mb-2.5">
+                          {col.role}
+                        </p>
 
-                {/* 3. COULEUR ACCENTUATION */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1">
-                    Couleur d&apos;Accentuation (Or / Ambre)
-                  </label>
-                  <p className="text-[11px] text-slate-500 mb-2">
-                    Prix, étoiles, dégradés d&apos;impact
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={settings.accentColor || "#f59e0b"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, accentColor: e.target.value })
-                      }
-                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
-                    />
-                    <input
-                      type="text"
-                      value={settings.accentColor || "#f59e0b"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, accentColor: e.target.value })
-                      }
-                      placeholder="#f59e0b"
-                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
-                    />
-                  </div>
-                </div>
+                        {/* Pastille cliquable + Input Hexadécimal */}
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setActiveColorPicker({
+                                key: col.key,
+                                name: col.name,
+                                role: col.role,
+                              })
+                            }
+                            className="relative w-10 h-10 rounded-xl border border-slate-300 shadow-sm overflow-hidden flex-shrink-0 group cursor-pointer hover:ring-2 hover:ring-brand-500/40 transition"
+                            style={{
+                              backgroundImage:
+                                "repeating-conic-gradient(#cbd5e1 0% 25%, #ffffff 0% 50%)",
+                              backgroundPosition: "50%",
+                              backgroundSize: "8px 8px",
+                            }}
+                            title="Cliquer pour ouvrir le sélecteur avec spectre & barre d'opacité"
+                          >
+                            <div
+                              className="w-full h-full group-hover:scale-105 transition"
+                              style={{
+                                backgroundColor:
+                                  parsed.a < 1 ? parsed.hex8 : parsed.hex6,
+                              }}
+                            />
+                          </button>
 
-                {/* 4. COULEUR SOMBRE */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-800 mb-1">
-                    Couleur Sombre (Dark / Footer)
-                  </label>
-                  <p className="text-[11px] text-slate-500 mb-2">
-                    Pied de page, hero fond sombre, header
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="color"
-                      value={settings.darkColor || "#042f2e"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, darkColor: e.target.value })
-                      }
-                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
-                    />
-                    <input
-                      type="text"
-                      value={settings.darkColor || "#042f2e"}
-                      onChange={(e) =>
-                        setSettings({ ...settings, darkColor: e.target.value })
-                      }
-                      placeholder="#042f2e"
-                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
-                    />
-                  </div>
-                </div>
+                          <input
+                            type="text"
+                            value={rawVal}
+                            onChange={(e) =>
+                              setSettings({
+                                ...settings,
+                                [col.key]: e.target.value,
+                              })
+                            }
+                            placeholder={col.defaultHex}
+                            className="flex-1 rounded-xl border border-slate-200 px-2.5 py-2 text-xs font-mono uppercase font-bold text-slate-700 bg-slate-50 focus:bg-white"
+                          />
+                        </div>
+                      </div>
+
+                      {/* BARRE D'OPACITÉ AVEC FOND DAMIER */}
+                      <div className="pt-2 border-t border-slate-100 space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-semibold text-slate-600 flex items-center gap-1">
+                            <span>Barre d&apos;opacité</span>
+                          </span>
+                          <span className="font-mono font-bold text-slate-800 text-[11px]">
+                            {alphaPercent}%
+                          </span>
+                        </div>
+
+                        {/* Slider visuel sur fond damier + dégradé vers la couleur */}
+                        <div
+                          className="relative h-5 rounded-lg overflow-hidden border border-slate-300 shadow-inner"
+                          style={{
+                            backgroundImage:
+                              "repeating-conic-gradient(#cbd5e1 0% 25%, #ffffff 0% 50%)",
+                            backgroundPosition: "50%",
+                            backgroundSize: "8px 8px",
+                          }}
+                        >
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={alphaPercent}
+                            onChange={(e) => {
+                              const newAlpha = Number(e.target.value) / 100;
+                              const newHex = rgbaToHex(
+                                parsed.r,
+                                parsed.g,
+                                parsed.b,
+                                newAlpha
+                              );
+                              setSettings({
+                                ...settings,
+                                [col.key]: newHex,
+                              });
+                            }}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            title={`Opacité : ${alphaPercent}%`}
+                          />
+                          <div
+                            className="w-full h-full pointer-events-none"
+                            style={{
+                              background: `linear-gradient(to right, transparent, ${parsed.hex6})`,
+                            }}
+                          />
+                          {/* Curseur visuel */}
+                          <div
+                            className="absolute top-0 bottom-0 w-2.5 -ml-1 rounded-sm border-2 border-white shadow-md pointer-events-none ring-1 ring-black/40"
+                            style={{
+                              left: `${alphaPercent}%`,
+                              backgroundColor:
+                                parsed.a < 1 ? parsed.hex8 : parsed.hex6,
+                            }}
+                          />
+                        </div>
+
+                        {/* Bouton pour ouvrir la palette complète */}
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setActiveColorPicker({
+                              key: col.key,
+                              name: col.name,
+                              role: col.role,
+                            })
+                          }
+                          className="w-full mt-1.5 py-1 px-2 rounded-lg border border-slate-200/80 bg-slate-50 hover:bg-slate-100 text-[10px] font-semibold text-slate-600 flex items-center justify-center gap-1.5 transition"
+                        >
+                          <Sliders className="w-3 h-3 text-slate-500" />
+                          <span>Spectre &amp; Opacité avancés</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* APERÇU EN DIRECT DU THÈME */}
@@ -2918,6 +2982,23 @@ export default function AdminDashboardClient({
           </div>
         )}
       </div>
+
+      {/* MODALE DU SÉLECTEUR AVANCÉ AVEC SPECTRE & BARRE D'OPACITÉ */}
+      {activeColorPicker && (
+        <ColorPickerModal
+          isOpen={true}
+          onClose={() => setActiveColorPicker(null)}
+          colorName={activeColorPicker.name}
+          colorRole={activeColorPicker.role}
+          currentColor={settings[activeColorPicker.key] || "#0f766e"}
+          onApply={(newHex) => {
+            setSettings({
+              ...settings,
+              [activeColorPicker.key]: newHex,
+            });
+          }}
+        />
+      )}
     </div>
   );
 }
