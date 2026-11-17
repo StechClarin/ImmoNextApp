@@ -70,6 +70,10 @@ async function runSeedIfEmpty(): Promise<void> {
         aboutIntro: s.aboutIntro,
         aboutStory: s.aboutStory,
         statsJson: JSON.stringify(s.stats),
+        primaryColor: s.primaryColor || "#0f766e",
+        secondaryColor: s.secondaryColor || "#ea580c",
+        accentColor: s.accentColor || "#f59e0b",
+        darkColor: s.darkColor || "#042f2e",
       },
     });
 
@@ -222,6 +226,10 @@ function mapSettings(row: {
   aboutIntro: string;
   aboutStory: string;
   statsJson: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  darkColor?: string;
 }): AgencySettings {
   return {
     name: row.name,
@@ -239,6 +247,10 @@ function mapSettings(row: {
     aboutIntro: row.aboutIntro,
     aboutStory: row.aboutStory,
     stats: JSON.parse(row.statsJson) as AgencySettings["stats"],
+    primaryColor: row.primaryColor || "#0f766e",
+    secondaryColor: row.secondaryColor || "#ea580c",
+    accentColor: row.accentColor || "#f59e0b",
+    darkColor: row.darkColor || "#042f2e",
   };
 }
 
@@ -446,6 +458,10 @@ export async function updateSettings(
       aboutIntro: next.aboutIntro,
       aboutStory: next.aboutStory,
       statsJson: JSON.stringify(next.stats),
+      primaryColor: next.primaryColor || "#0f766e",
+      secondaryColor: next.secondaryColor || "#ea580c",
+      accentColor: next.accentColor || "#f59e0b",
+      darkColor: next.darkColor || "#042f2e",
     },
   });
 

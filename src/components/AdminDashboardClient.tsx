@@ -37,6 +37,8 @@ import {
   KeyRound,
   Crown,
   Database,
+  Palette,
+  RotateCcw,
 } from "lucide-react";
 import {
   Property,
@@ -48,6 +50,7 @@ import {
   AdminPermission,
 } from "@/types/immo";
 import { buildNextPropertyReference, formatPriceFCFA } from "@/lib/format";
+import { THEME_PRESETS } from "@/lib/theme";
 
 export default function AdminDashboardClient({
   currentUser,
@@ -2438,6 +2441,372 @@ export default function AdminDashboardClient({
                 }
                 className="w-full rounded-xl border border-slate-200 px-3.5 py-2.5 text-sm"
               />
+            </div>
+
+            {/* SECTION APPARENCE & CHARTE GRAPHIQUE */}
+            <div className="pt-6 border-t border-slate-200/90 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-fusion-500/10 flex items-center justify-center text-fusion-600">
+                    <Palette className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-slate-900">
+                      Apparence &amp; Charte Graphique du Site
+                    </h3>
+                    <p className="text-xs text-slate-500">
+                      Personnalisez les couleurs principales, secondaires, d&apos;accentuation et sombres. L&apos;ensemble du site s&apos;adaptera automatiquement.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSettings({
+                      ...settings,
+                      primaryColor: "#0f766e",
+                      darkColor: "#042f2e",
+                      secondaryColor: "#ea580c",
+                      accentColor: "#f59e0b",
+                    });
+                  }}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-100 transition"
+                  title="Restaurer les couleurs officielles Teal & Fusion Congo"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Réinitialiser par défaut</span>
+                </button>
+              </div>
+
+              {/* PALETTES PRÉDÉFINIES */}
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+                  Harmonies recommandées en 1 clic
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                  {THEME_PRESETS.map((preset) => {
+                    const isSelected =
+                      (settings.primaryColor || "#0f766e").toLowerCase() === preset.primaryColor.toLowerCase() &&
+                      (settings.secondaryColor || "#ea580c").toLowerCase() === preset.secondaryColor.toLowerCase();
+                    return (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => {
+                          setSettings({
+                            ...settings,
+                            primaryColor: preset.primaryColor,
+                            darkColor: preset.darkColor,
+                            secondaryColor: preset.secondaryColor,
+                            accentColor: preset.accentColor,
+                          });
+                        }}
+                        className={`group relative p-3 rounded-2xl border text-left transition flex flex-col justify-between h-full ${
+                          isSelected
+                            ? "border-brand-600 bg-brand-50/50 ring-2 ring-brand-500/30"
+                            : "border-slate-200 hover:border-slate-300 bg-slate-50/50 hover:bg-white"
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5 mb-2">
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/10 shadow-sm"
+                            style={{ backgroundColor: preset.primaryColor }}
+                            title="Couleur principale"
+                          />
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/10 shadow-sm"
+                            style={{ backgroundColor: preset.secondaryColor }}
+                            title="Couleur secondaire"
+                          />
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/10 shadow-sm"
+                            style={{ backgroundColor: preset.accentColor }}
+                            title="Couleur d'accent"
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-slate-800 leading-tight">
+                            {preset.name}
+                          </p>
+                          <p className="text-[10px] text-slate-500 line-clamp-2 mt-0.5">
+                            {preset.description}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* SÉLECTEURS DE COULEURS */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80">
+                {/* 1. COULEUR PRINCIPALE */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
+                    Couleur Principale (Brand)
+                  </label>
+                  <p className="text-[11px] text-slate-500 mb-2">
+                    Bandeaux, boutons primaires, titres
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={settings.primaryColor || "#0f766e"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, primaryColor: e.target.value })
+                      }
+                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
+                    />
+                    <input
+                      type="text"
+                      value={settings.primaryColor || "#0f766e"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, primaryColor: e.target.value })
+                      }
+                      placeholder="#0f766e"
+                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* 2. COULEUR SECONDAIRE */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
+                    Couleur Secondaire (Fusion)
+                  </label>
+                  <p className="text-[11px] text-slate-500 mb-2">
+                    Boutons d&apos;action, badges, contrastes
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={settings.secondaryColor || "#ea580c"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, secondaryColor: e.target.value })
+                      }
+                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
+                    />
+                    <input
+                      type="text"
+                      value={settings.secondaryColor || "#ea580c"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, secondaryColor: e.target.value })
+                      }
+                      placeholder="#ea580c"
+                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* 3. COULEUR ACCENTUATION */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
+                    Couleur d&apos;Accentuation (Or / Ambre)
+                  </label>
+                  <p className="text-[11px] text-slate-500 mb-2">
+                    Prix, étoiles, dégradés d&apos;impact
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={settings.accentColor || "#f59e0b"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, accentColor: e.target.value })
+                      }
+                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
+                    />
+                    <input
+                      type="text"
+                      value={settings.accentColor || "#f59e0b"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, accentColor: e.target.value })
+                      }
+                      placeholder="#f59e0b"
+                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
+                    />
+                  </div>
+                </div>
+
+                {/* 4. COULEUR SOMBRE */}
+                <div>
+                  <label className="block text-xs font-bold text-slate-800 mb-1">
+                    Couleur Sombre (Dark / Footer)
+                  </label>
+                  <p className="text-[11px] text-slate-500 mb-2">
+                    Pied de page, hero fond sombre, header
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="color"
+                      value={settings.darkColor || "#042f2e"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, darkColor: e.target.value })
+                      }
+                      className="w-10 h-10 rounded-xl border border-slate-300 cursor-pointer p-0.5 bg-white"
+                    />
+                    <input
+                      type="text"
+                      value={settings.darkColor || "#042f2e"}
+                      onChange={(e) =>
+                        setSettings({ ...settings, darkColor: e.target.value })
+                      }
+                      placeholder="#042f2e"
+                      className="flex-1 rounded-xl border border-slate-200 px-3 py-2 text-xs font-mono uppercase font-semibold text-slate-700 bg-white"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* APERÇU EN DIRECT DU THÈME */}
+              <div className="rounded-2xl border border-slate-200/90 overflow-hidden bg-white shadow-sm">
+                <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                    <span className="text-xs font-semibold text-slate-600 ml-2">
+                      Aperçu interactif de votre nouvelle charte
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-slate-500 font-mono">
+                    Simulation en direct
+                  </span>
+                </div>
+
+                <div className="p-4 sm:p-6 space-y-4">
+                  {/* Mini Header */}
+                  <div
+                    className="p-3.5 rounded-xl text-white flex items-center justify-between shadow-sm"
+                    style={{ backgroundColor: settings.darkColor || "#042f2e" }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs"
+                        style={{
+                          background: `linear-gradient(135deg, ${settings.secondaryColor || "#ea580c"}, ${settings.accentColor || "#f59e0b"})`,
+                          color: "#fff",
+                        }}
+                      >
+                        IV
+                      </div>
+                      <span className="font-bold text-sm tracking-tight">
+                        {settings.name || "ImmoVitrine Congo"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-white/80 hidden sm:inline">
+                        Accueil
+                      </span>
+                      <span className="text-xs text-white/80 hidden sm:inline">
+                        Biens
+                      </span>
+                      <button
+                        type="button"
+                        className="text-xs px-3 py-1 rounded-lg font-bold"
+                        style={{
+                          background: `linear-gradient(135deg, ${settings.secondaryColor || "#ea580c"}, ${settings.accentColor || "#f59e0b"})`,
+                          color: settings.darkColor || "#042f2e",
+                        }}
+                      >
+                        Contact
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Mini Card Preview */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="border border-slate-200 rounded-xl p-3.5 space-y-2.5 bg-slate-50/50">
+                      <div className="flex items-center justify-between">
+                        <span
+                          className="px-2 py-0.5 rounded text-[11px] font-bold text-white uppercase tracking-wider"
+                          style={{
+                            backgroundColor: settings.primaryColor || "#0f766e",
+                          }}
+                        >
+                          À VENDRE
+                        </span>
+                        <span
+                          className="font-bold text-sm font-mono"
+                          style={{
+                            color: settings.secondaryColor || "#ea580c",
+                          }}
+                        >
+                          125 000 000 FCFA
+                        </span>
+                      </div>
+                      <h4
+                        className="font-bold text-sm"
+                        style={{ color: settings.darkColor || "#042f2e" }}
+                      >
+                        Villa de Prestige au Centre-Ville
+                      </h4>
+                      <p className="text-xs text-slate-500 line-clamp-2">
+                        Magnifique villa contemporaine R+1 avec piscine privée, 4 chambres et groupe électrogène.
+                      </p>
+                      <button
+                        type="button"
+                        className="w-full py-2 rounded-lg text-xs font-bold text-white transition hover:opacity-90"
+                        style={{
+                          backgroundColor: settings.primaryColor || "#0f766e",
+                        }}
+                      >
+                        Voir les détails du bien
+                      </button>
+                    </div>
+
+                    <div className="border border-slate-200 rounded-xl p-3.5 space-y-3 bg-gradient-to-br from-slate-50 to-white flex flex-col justify-between">
+                      <div>
+                        <h4 className="font-bold text-sm text-slate-900 mb-1">
+                          Boutons d&apos;Appel à l&apos;Action (CTA)
+                        </h4>
+                        <p className="text-xs text-slate-500 mb-3">
+                          Testez le contraste entre la couleur principale et les accents.
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            type="button"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm"
+                            style={{
+                              backgroundColor: settings.primaryColor || "#0f766e",
+                            }}
+                          >
+                            Bouton Principal
+                          </button>
+                          <button
+                            type="button"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm"
+                            style={{
+                              backgroundColor: settings.secondaryColor || "#ea580c",
+                            }}
+                          >
+                            Bouton Action
+                          </button>
+                          <button
+                            type="button"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold"
+                            style={{
+                              backgroundColor: settings.accentColor || "#f59e0b",
+                              color: settings.darkColor || "#042f2e",
+                            }}
+                          >
+                            Accent Or
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        className="p-2.5 rounded-lg text-xs font-medium text-center"
+                        style={{
+                          background: `linear-gradient(135deg, ${settings.secondaryColor || "#ea580c"}, ${settings.accentColor || "#f59e0b"})`,
+                          color: settings.darkColor || "#042f2e",
+                        }}
+                      >
+                        Dégradé Fusion officiel : Bannière &amp; Prix vedettes
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <button

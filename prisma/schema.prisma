@@ -24,6 +24,10 @@ model Settings {
   aboutIntro     String @map("about_intro")
   aboutStory     String @map("about_story")
   statsJson      String @map("stats_json")
+  primaryColor   String @default("#0f766e") @map("primary_color")
+  secondaryColor String @default("#ea580c") @map("secondary_color")
+  accentColor    String @default("#f59e0b") @map("accent_color")
+  darkColor      String @default("#042f2e") @map("dark_color")
 
   @@map("settings")
 }

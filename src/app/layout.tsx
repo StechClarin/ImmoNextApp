@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import { getSettings } from "@/lib/db";
+import { generateThemeCss } from "@/lib/theme";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,12 @@ export default async function RootLayout({
 
   return (
     <html lang="fr">
+      <head>
+        <style
+          id="immovitrine-theme"
+          dangerouslySetInnerHTML={{ __html: generateThemeCss(settings) }}
+        />
+      </head>
       <body className="min-h-screen flex flex-col">
         <Navbar settings={settings} />
         <main className="flex-1">{children}</main>

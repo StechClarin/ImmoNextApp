@@ -14,6 +14,10 @@
     "openingHours": "Lundi - Vendredi : 08h00 - 17h30 | Samedi : 09h00 - 14h00",
     "aboutIntro": "Basée à Brazzaville et active sur l'ensemble du territoire congolais (Brazzaville, Pointe-Noire, Kintélé, Oyo), notre agence accompagne particuliers, expatriés, entreprises et investisseurs de la diaspora dans tous leurs projets immobiliers.",
     "aboutStory": "Nous avons fondé notre agence avec une ambition claire : apporter transparence, sécurité juridique et réactivité au marché immobilier en République du Congo. Que vous recherchiez une villa contemporaine avec piscine au Centre-Ville, une maison familiale à Bacongo ou au Plateau des 15 ans, ou un investissement sécurisé à Kintélé ou Pointe-Noire, notre équipe vérifie rigoureusement chaque titre foncier et assure un suivi personnalisé de la première visite jusqu'à la signature devant notaire ou la remise des clés.",
+    "primaryColor": "#0f766e",
+    "secondaryColor": "#ea580c",
+    "accentColor": "#f59e0b",
+    "darkColor": "#042f2e",
     "stats": {
       "propertiesSoldOrRented": "350+",
       "satisfiedClients": "98%",

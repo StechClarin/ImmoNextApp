@@ -102,6 +102,11 @@ export interface AgencySettings {
     yearsExperience: string;
     citiesCovered: string;
   };
+  // Apparence & Charte Graphique
+  primaryColor?: string; // Couleur principale (ex: #0f766e)
+  secondaryColor?: string; // Couleur secondaire / boutons (ex: #ea580c)
+  accentColor?: string; // Couleur d'accentuation / or (ex: #f59e0b)
+  darkColor?: string; // Couleur sombre / navbar / footer (ex: #042f2e)
 }
 
 export type AdminPermission =

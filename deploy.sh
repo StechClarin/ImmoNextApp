@@ -106,3 +106,4 @@ else
     echo "Vérifiez les logs avec :"
     echo "  $DOCKER_COMPOSE logs -f immovitrine"
 fi
+
