@@ -298,7 +298,7 @@ export default function AdminDashboardClient({
     const res = await fetch(`/api/properties?id=${id}`, { method: "DELETE" });
     if (res.ok) {
       setProperties((prev) => prev.filter((p) => p.id !== id));
-      showToast("Bien immobilier supprimé.");
+      showToast("Bien immobilier et ses images supprimés.");
       router.refresh();
     }
   }

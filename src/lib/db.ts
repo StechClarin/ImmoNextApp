@@ -585,9 +585,84 @@ export async function saveProperty(property: Property): Promise<Property> {
 export async function deleteProperty(id: string): Promise<boolean> {
   await ensureSeeded();
   try {
+    const existing = await prisma.property.findUnique({
+      where: { id },
+    });
+    if (!existing) return false;
+
+    // Récupérer la liste des images de ce bien
+    let propertyImages: string[] = [];
+    try {
+      propertyImages = JSON.parse(existing.imagesJson || "[]");
+    } catch {
+      propertyImages = [];
+    }
+
+    // Récupérer les images encore utilisées par d'autres biens
+    const otherProps = await prisma.property.findMany({
+      where: { id: { not: id } },
+      select: { imagesJson: true },
+    });
+    const usedImages = new Set<string>();
+    for (const op of otherProps) {
+      try {
+        const arr = JSON.parse(op.imagesJson || "[]");
+        if (Array.isArray(arr)) {
+          arr.forEach((img) => {
+            if (typeof img === "string") usedImages.add(img.trim());
+          });
+        }
+      } catch {}
+    }
+
+    // Récupérer les images utilisées par l'équipe, les articles et l'identité
+    const [teamMembers, articles, settings] = await Promise.all([
+      prisma.teamMember.findMany({ select: { photo: true } }),
+      prisma.article.findMany({ select: { coverImage: true } }),
+      prisma.settings.findFirst({ select: { logoUrl: true } }),
+    ]);
+    teamMembers.forEach((t) => t.photo && usedImages.add(t.photo.trim()));
+    articles.forEach((a) => a.coverImage && usedImages.add(a.coverImage.trim()));
+    if (settings?.logoUrl) usedImages.add(settings.logoUrl.trim());
+
+    // Supprimer les fichiers physiques situés dans public/uploads
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    for (const rawUrl of propertyImages) {
+      if (typeof rawUrl === "string" && rawUrl.includes("/uploads/")) {
+        const cleanUrl = rawUrl.split("?")[0].split("#")[0].trim();
+        const fileName = path.basename(cleanUrl);
+
+        // Protection : ne jamais supprimer un fichier vide ou .gitkeep
+        if (!fileName || fileName === ".gitkeep") continue;
+
+        // Vérifier si cette image exacte est encore utilisée ailleurs
+        const isStillInUse = Array.from(usedImages).some((u) => {
+          if (!u) return false;
+          const uClean = u.split("?")[0].split("#")[0].trim();
+          return path.basename(uClean) === fileName;
+        });
+
+        if (!isStillInUse) {
+          const filePath = path.join(uploadDir, fileName);
+          try {
+            if (fs.existsSync(filePath)) {
+              await fs.promises.unlink(filePath);
+            }
+          } catch (fileErr) {
+            console.error(
+              `Impossible de supprimer le fichier upload ${filePath}:`,
+              fileErr
+            );
+          }
+        }
+      }
+    }
+
+    // Supprimer le bien de la base de données
     await prisma.property.delete({ where: { id } });
     return true;
-  } catch {
+  } catch (err) {
+    console.error("Erreur deleteProperty:", err);
     return false;
   }
 }
@@ -634,6 +709,20 @@ export async function saveTeamMember(
 export async function deleteTeamMember(id: string): Promise<boolean> {
   await ensureSeeded();
   try {
+    const existing = await prisma.teamMember.findUnique({ where: { id } });
+    if (existing && existing.photo && existing.photo.includes("/uploads/")) {
+      const fileName = path.basename(
+        existing.photo.split("?")[0].split("#")[0].trim()
+      );
+      if (fileName && fileName !== ".gitkeep") {
+        const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+        try {
+          if (fs.existsSync(filePath)) {
+            await fs.promises.unlink(filePath);
+          }
+        } catch {}
+      }
+    }
     await prisma.teamMember.delete({ where: { id } });
     return true;
   } catch {
@@ -695,6 +784,24 @@ export async function saveArticle(article: Article): Promise<Article> {
 export async function deleteArticle(id: string): Promise<boolean> {
   await ensureSeeded();
   try {
+    const existing = await prisma.article.findUnique({ where: { id } });
+    if (
+      existing &&
+      existing.coverImage &&
+      existing.coverImage.includes("/uploads/")
+    ) {
+      const fileName = path.basename(
+        existing.coverImage.split("?")[0].split("#")[0].trim()
+      );
+      if (fileName && fileName !== ".gitkeep") {
+        const filePath = path.join(process.cwd(), "public", "uploads", fileName);
+        try {
+          if (fs.existsSync(filePath)) {
+            await fs.promises.unlink(filePath);
+          }
+        } catch {}
+      }
+    }
     await prisma.article.delete({ where: { id } });
     return true;
   } catch {
