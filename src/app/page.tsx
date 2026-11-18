@@ -82,15 +82,15 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* HERO SECTION */}
-      <section className="relative bg-brand-950 text-white overflow-hidden">
+      {/* HERO SECTION (HAUTEUR FIXE & STABLE) */}
+      <section className="relative bg-brand-950 text-white overflow-hidden min-h-[640px] lg:min-h-[720px] flex items-center">
         {/* SLIDER D'IMAGES DYNAMIQUE EN ARRIÈRE-PLAN (VIVANT & ANIMÉ) */}
         <HeroBackgroundSlider
           slides={heroSlides.length > 0 ? heroSlides : undefined}
           intervalMs={6000}
         />
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="max-w-3xl space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-900/90 border border-fusion-400/40 text-fusion-300 text-xs font-semibold tracking-wide">
               

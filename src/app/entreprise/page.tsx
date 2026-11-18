@@ -79,10 +79,23 @@ export default async function EntreprisePage() {
 
   return (
     <div className="bg-slate-50 min-h-screen">
-      {/* Hero */}
-      <section className="bg-brand-950 text-white py-16 lg:py-24 border-b border-brand-800 relative overflow-hidden">
+      {/* Hero (Hauteur fixe & Arrière-plan avec images d'architecture) */}
+      <section className="relative bg-brand-950 text-white min-h-[400px] lg:min-h-[460px] flex items-center border-b border-brand-800 overflow-hidden">
+        {/* Photo d'architecture immobilière en arrière-plan */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30 transform scale-105 transition-transform duration-[8000ms] pointer-events-none"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=85')",
+          }}
+        />
+        {/* Voiles de contraste pour préserver la lisibilité du texte */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/85 to-brand-900/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-transparent to-brand-950/95" />
+
         <div className="absolute -top-24 right-0 w-96 h-96 rounded-full bg-fusion-500/15 blur-3xl pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20 flex flex-col md:flex-row md:items-center justify-between gap-8">
           <div className="max-w-3xl space-y-5">
             <span className="inline-block text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-fusion-500/20 text-fusion-300 border border-fusion-400/30">
               À Propos de {settings.name}
@@ -96,6 +109,26 @@ export default async function EntreprisePage() {
             <p className="text-lg text-brand-100 leading-relaxed">
               {settings.aboutIntro}
             </p>
+          </div>
+
+          {/* Badge d'annonce avec photo & hauteur fixe */}
+          <div className="hidden lg:flex shrink-0 h-16 w-80 items-center gap-3 px-3.5 bg-brand-900/80 backdrop-blur-md rounded-2xl border border-white/15 text-white shadow-xl">
+            <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-white/20 shadow-sm bg-brand-950">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400&q=80"
+                alt="Agence Immobilière"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="text-[10px] uppercase font-bold text-fusion-300 tracking-wider">
+                Immobilier de Confiance
+              </span>
+              <p className="text-xs font-bold text-white truncate">
+                {settings.city}, {settings.country}
+              </p>
+            </div>
           </div>
         </div>
       </section>

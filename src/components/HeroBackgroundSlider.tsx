@@ -110,18 +110,36 @@ export default function HeroBackgroundSlider({
       <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-fusion-500/20 blur-3xl pointer-events-none z-20" />
       <div className="absolute bottom-0 left-1/4 w-80 h-80 rounded-full bg-brand-400/15 blur-3xl pointer-events-none z-20" />
 
-      {/* BADGE DISCRET INDIQUANT LE BIEN/LA VILLE AFFICHÉ(E) */}
+      {/* BANNIÈRE D'ANNONCE FLOTTANTE (HAUTEUR STRICTEMENT FIXE & VIGNETTE IMAGE INCLUSE) */}
       {currentSlide && (
-        <div className="hidden sm:flex absolute top-6 right-6 z-30 items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-950/70 backdrop-blur-md border border-white/10 text-white/90 text-xs shadow-lg transition-all duration-500 animate-in fade-in">
-          <MapPin className="w-3.5 h-3.5 text-fusion-400 flex-shrink-0" />
-          <span className="font-semibold text-white truncate max-w-[260px]">
-            {currentSlide.caption || "Immobilier de prestige"}
-          </span>
-          {currentSlide.location && (
-            <span className="text-[11px] text-brand-200 border-l border-white/20 pl-2">
-              {currentSlide.location}
-            </span>
-          )}
+        <div className="hidden sm:flex absolute top-6 right-6 z-30 h-16 w-80 lg:w-96 items-center gap-3 px-3.5 bg-brand-950/80 backdrop-blur-md rounded-2xl border border-white/15 text-white shadow-2xl overflow-hidden transition-all duration-300">
+          {/* Vignette image de l'annonce */}
+          <div className="relative w-11 h-11 rounded-xl overflow-hidden shrink-0 border border-white/20 shadow-sm bg-brand-900">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={currentSlide.url}
+              alt={currentSlide.caption || "Annonce immobilière"}
+              className="w-full h-full object-cover transition-opacity duration-700 ease-in-out"
+            />
+          </div>
+
+          {/* Textes de l'annonce avec hauteur et lignes strictement fixes */}
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-fusion-500/20 text-fusion-300 border border-fusion-400/30 shrink-0">
+                À la une
+              </span>
+              <p className="text-xs font-bold text-white truncate">
+                {currentSlide.caption || "Annonce de prestige"}
+              </p>
+            </div>
+            {currentSlide.location && (
+              <p className="text-[11px] text-brand-200 truncate flex items-center gap-1 mt-0.5">
+                <MapPin className="w-3 h-3 text-fusion-400 shrink-0" />
+                <span className="truncate">{currentSlide.location}</span>
+              </p>
+            )}
+          </div>
         </div>
       )}
 

@@ -10,10 +10,21 @@ export default async function EquipePage() {
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
-      {/* Header */}
-      <section className="bg-brand-950 text-white py-16 border-b border-brand-800 relative overflow-hidden">
+      {/* Header (Hauteur fixe & Arrière-plan avec photo) */}
+      <section className="relative bg-brand-950 text-white min-h-[360px] flex items-center border-b border-brand-800 overflow-hidden">
+        {/* Photo de fond */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-25 transform scale-105 pointer-events-none"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1920&q=85')",
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-950/85 to-brand-900/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-950/90 via-transparent to-brand-950/95" />
         <div className="absolute -top-20 left-1/3 w-80 h-80 rounded-full bg-fusion-500/15 blur-3xl pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+
+        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <span className="inline-block text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full bg-fusion-500/20 text-fusion-300 border border-fusion-400/30">
             Les Visages de {settings.name}
           </span>

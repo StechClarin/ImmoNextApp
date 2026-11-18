@@ -2782,39 +2782,52 @@ export default function AdminDashboardClient({
                     </div>
                   </div>
 
-                  {/* Mini Card Preview */}
+                  {/* Mini Card Preview (Hauteur fixe & image d'annonce) */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="border border-slate-200 rounded-xl p-3.5 space-y-2.5 bg-slate-50/50">
-                      <div className="flex items-center justify-between">
-                        <span
-                          className="px-2 py-0.5 rounded text-[11px] font-bold text-white uppercase tracking-wider"
-                          style={{
-                            backgroundColor: settings.primaryColor || "#0f766e",
-                          }}
-                        >
-                          À VENDRE
-                        </span>
-                        <span
-                          className="font-bold text-sm font-mono"
-                          style={{
-                            color: settings.secondaryColor || "#ea580c",
-                          }}
-                        >
-                          125 000 000 FCFA
-                        </span>
+                    <div className="border border-slate-200 rounded-xl p-3.5 space-y-2.5 bg-slate-50/50 min-h-[300px] flex flex-col justify-between">
+                      <div>
+                        {/* Photo de l'annonce */}
+                        <div className="relative w-full h-28 rounded-lg overflow-hidden mb-2.5 bg-slate-200">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=600&q=80"
+                            alt="Aperçu annonce"
+                            className="w-full h-full object-cover"
+                          />
+                          <span
+                            className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold text-white uppercase tracking-wider shadow-sm"
+                            style={{
+                              backgroundColor: settings.primaryColor || "#0f766e",
+                            }}
+                          >
+                            À VENDRE
+                          </span>
+                        </div>
+
+                        <div className="flex items-center justify-between mb-1">
+                          <h4
+                            className="font-bold text-sm truncate"
+                            style={{ color: settings.darkColor || "#042f2e" }}
+                          >
+                            Villa de Prestige au Centre-Ville
+                          </h4>
+                          <span
+                            className="font-bold text-xs font-mono shrink-0 ml-2"
+                            style={{
+                              color: settings.secondaryColor || "#ea580c",
+                            }}
+                          >
+                            125 000 000 FCFA
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-500 line-clamp-2">
+                          Magnifique villa contemporaine R+1 avec piscine privée, 4 chambres et groupe électrogène.
+                        </p>
                       </div>
-                      <h4
-                        className="font-bold text-sm"
-                        style={{ color: settings.darkColor || "#042f2e" }}
-                      >
-                        Villa de Prestige au Centre-Ville
-                      </h4>
-                      <p className="text-xs text-slate-500 line-clamp-2">
-                        Magnifique villa contemporaine R+1 avec piscine privée, 4 chambres et groupe électrogène.
-                      </p>
+
                       <button
                         type="button"
-                        className="w-full py-2 rounded-lg text-xs font-bold text-white transition hover:opacity-90"
+                        className="w-full py-2 rounded-lg text-xs font-bold text-white transition hover:opacity-90 mt-2"
                         style={{
                           backgroundColor: settings.primaryColor || "#0f766e",
                         }}
