@@ -3,6 +3,23 @@ import fs from "fs";
 import path from "path";
 import { requireAdminAuth } from "@/lib/auth";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 Mo
+const ALLOWED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/avif",
+]);
+const ALLOWED_EXTENSIONS = new Set([
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".gif",
+  ".avif",
+]);
+
 export async function POST(req: NextRequest) {
   const { errorResponse } = await requireAdminAuth();
   if (errorResponse) return errorResponse;
@@ -17,15 +34,33 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        { error: "Fichier trop volumineux (taille maximale : 10 Mo)." },
+        { status: 413 }
+      );
+    }
+
+    const ext = (path.extname(file.name) || "").toLowerCase();
+    if (!ALLOWED_MIME_TYPES.has(file.type) || !ALLOWED_EXTENSIONS.has(ext)) {
+      return NextResponse.json(
+        {
+          error:
+            "Format non autorisé. Seules les images JPG, PNG, WEBP, GIF et AVIF sont acceptées.",
+        },
+        { status: 400 }
+      );
+    }
+
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const ext = path.extname(file.name) || ".jpg";
     const safeBase = path
       .basename(file.name, ext)
       .toLowerCase()
-      .replace(/[^a-z0-9_-]/g, "-");
-    const fileName = `${Date.now()}-${safeBase}${ext}`;
+      .replace(/[^a-z0-9_-]/g, "-")
+      .slice(0, 60);
+    const fileName = `${Date.now()}-${safeBase || "image"}${ext}`;
 
     const uploadDir = path.join(process.cwd(), "public", "uploads");
     fs.mkdirSync(uploadDir, { recursive: true });

@@ -18,7 +18,8 @@ RUN npm run build
 
 # 3. Production runner
 FROM base AS runner
-RUN apk add --no-cache su-exec
+RUN apk add --no-cache su-exec openssl && \
+    npm install -g prisma@5.22.0
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000

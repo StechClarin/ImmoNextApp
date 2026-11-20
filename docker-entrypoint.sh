@@ -8,5 +8,8 @@ mkdir -p /app/data /app/public/uploads
 chown -R nextjs:nodejs /app/data /app/public/uploads 2>/dev/null || true
 chmod -R 775 /app/data /app/public/uploads 2>/dev/null || true
 
+# Initialiser ou synchroniser automatiquement le schéma SQLite (crée immovitrine.db si absent)
+su-exec nextjs prisma db push --skip-generate
+
 # Exécuter la commande finale sous l'utilisateur sécurisé nextjs
 exec su-exec nextjs "$@"
